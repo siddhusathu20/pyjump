@@ -6,4 +6,6 @@ This is not a finished product by any means, in fact it's barely a minimum viabl
 Fun fact: This is actually my class 12 CBSE project! I wanted to go out of my last year of school with a bang in my favourite subject!
 Enjoy, and please share your feedback!
 
+Python and the arcade library are required to play.
+
 My email for feedback: siddhu.sathu@gmail.com
