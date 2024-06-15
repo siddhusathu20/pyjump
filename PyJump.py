@@ -25,7 +25,9 @@ polarity.""",
     4: """ZERO GRAVITY:
 Press SPACE to change
 your vertical movement
-direction."""
+direction.""",
+    5: """Time to put
+your skills to the test!"""
 }
 
 
@@ -158,6 +160,7 @@ class Game(arcade.View):
         self.tip_text.draw()
 
     def on_update(self, delta_time):
+        print(arcade.get_fps())
         if self.reverse is True:
             self.cube_sprite.change_x = -X_MOVE_SPEED*(self.window.height/480)
         else:
@@ -195,7 +198,7 @@ class Game(arcade.View):
             self.attempt += 1
             self.setup()
         if arcade.check_for_collision_with_list(self.cube_sprite, self.scene["Finish"]):
-            if self.level < 4:
+            if self.level < 5:
                 self.level += 1
                 with open("save1.txt", "r+") as self.save1:
                     self.save1.seek(0)
@@ -244,6 +247,7 @@ class Game(arcade.View):
     
 
 if __name__ == "__main__":
+    arcade.enable_timings()
     game_window = arcade.Window(640, 480, "PyJump", resizable=True)
     menu = Menu()
     game_window.show_view(menu)
