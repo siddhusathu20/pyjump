@@ -1,16 +1,12 @@
-# Class 12 project
+# PyJump (class 12 project)
 # by Siddharth Jai Gokulan
 
 import arcade
 import arcade.gui
-import sys
-import time
 import arcade.gui.widgets
 import arcade.gui.widgets.layout
 import arcade.gui.widgets.text
 
-X_MOVE_SPEED = 4
-Y_MOVE_SPEED = 10
 LEVEL_TIPS = {
     1: """Press SPACE to jump.
 Your progress will be saved
@@ -26,8 +22,11 @@ polarity.""",
 Press SPACE to change
 your vertical movement
 direction.""",
-    5: """Time to put
-your skills to the test!"""
+    5: """BULLET TIME:
+Press ENTER to enter
+bullet time and press
+it again to exit
+bullet time."""
 }
 
 
@@ -112,6 +111,10 @@ class Game(arcade.View):
         self.reverse = False
         self.can_double_jump = False
         self.can_reverse = False
+        self.can_use_bullet_time = False
+        self.in_bullet_time = False
+        self.x_speed = 4
+        self.y_speed = 10
         try:
             with open("save1.txt", "r+") as self.save1:
                 self.save1.seek(0)
@@ -143,10 +146,15 @@ class Game(arcade.View):
         self.anti_grav = False
         self.zero_grav = False
         self.reverse = False
+        self.in_bullet_time = False
+        self.x_speed = 4
+        self.y_speed = 10
         if self.level >= 2:
             self.can_double_jump = True
         if self.level >= 3:
             self.can_reverse = True
+        if self.level >= 5:
+            self.can_use_bullet_time = True
         if self.can_double_jump is True:
             self.abin_sir.enable_multi_jump(2)
         
@@ -162,13 +170,19 @@ class Game(arcade.View):
     def on_update(self, delta_time):
         print(arcade.get_fps())
         if self.reverse is True:
-            self.cube_sprite.change_x = -X_MOVE_SPEED*(self.window.height/480)
+            self.cube_sprite.change_x = -self.x_speed*(self.window.height/480)
         else:
-            self.cube_sprite.change_x = X_MOVE_SPEED*(self.window.height/480)
+            self.cube_sprite.change_x = self.x_speed*(self.window.height/480)
         if (self.anti_grav is True and self.reverse is False) or (self.anti_grav is False and self.reverse is True):
-            self.cube_sprite.change_angle = -5
+            if self.in_bullet_time is True:
+                self.cube_sprite.change_angle = -2.5
+            else:
+                self.cube_sprite.change_angle = -5
         elif (self.anti_grav is False and self.reverse is False) or (self.anti_grav is True and self.reverse is True):
-            self.cube_sprite.change_angle = 5
+            if self.in_bullet_time is True:
+                self.cube_sprite.change_angle = 2.5
+            else:
+                self.cube_sprite.change_angle = 5
         self.camera.position = [self.cube_sprite.center_x+100, 240*(self.window.height/480)]
         self.abin_sir.update()
         anti_grav_block = arcade.check_for_collision_with_list(self.cube_sprite, self.scene["Anti Grav"])
@@ -190,7 +204,7 @@ class Game(arcade.View):
                     self.grav_const = self.window.height/480
             else:
                 self.grav_const = 0
-                self.cube_sprite.change_y = (Y_MOVE_SPEED/1.5)*(self.window.height/480)
+                self.cube_sprite.change_y = (self.y_speed/1.5)*(self.window.height/480)
             self.abin_sir = arcade.PhysicsEnginePlatformer(self.cube_sprite, walls = self.scene["Platforms"], gravity_constant = self.grav_const)
             if self.can_double_jump is True:
                 self.abin_sir.enable_multi_jump(2)
@@ -211,6 +225,22 @@ class Game(arcade.View):
                 self.window.show_view(Win())
     
     def on_key_press(self, key, modifiers):
+        if key == arcade.key.ENTER and self.can_use_bullet_time is True:
+            if self.in_bullet_time is False:
+                self.x_speed /= 2
+                self.y_speed /= 2
+                self.grav_const /= 4
+                self.abin_sir = arcade.PhysicsEnginePlatformer(self.cube_sprite, walls = self.scene["Platforms"], gravity_constant = self.grav_const)
+                if self.can_double_jump is True:
+                    self.abin_sir.enable_multi_jump(2)
+            elif self.in_bullet_time is True:
+                self.x_speed *= 2
+                self.y_speed *= 2
+                self.grav_const *= 4
+                self.abin_sir = arcade.PhysicsEnginePlatformer(self.cube_sprite, walls = self.scene["Platforms"], gravity_constant = self.grav_const)
+                if self.can_double_jump is True:
+                    self.abin_sir.enable_multi_jump(2)
+            self.in_bullet_time = not self.in_bullet_time
         if key == arcade.key.BACKSPACE and self.can_reverse is True:
             self.reverse = True
         if key == arcade.key.SPACE:
@@ -218,19 +248,19 @@ class Game(arcade.View):
                 if self.anti_grav is False:
                     if self.abin_sir.can_jump(5):
                         self.abin_sir.increment_jump_counter()
-                        self.cube_sprite.change_y = Y_MOVE_SPEED*(self.window.height/480)
+                        self.cube_sprite.change_y = self.y_speed*(self.window.height/480)
                 else:
                     if self.abin_sir.can_jump(-5):
                         self.abin_sir.increment_jump_counter()
-                        self.cube_sprite.change_y = -Y_MOVE_SPEED*(self.window.height/480)
+                        self.cube_sprite.change_y = -self.y_speed*(self.window.height/480)
             else:
                 if self.cube_sprite.change_y != 0:
                     self.cube_sprite.change_y = -self.cube_sprite.change_y
                 else:
                     if self.abin_sir.can_jump(5):
-                        self.cube_sprite.change_y = Y_MOVE_SPEED/1.5
+                        self.cube_sprite.change_y = self.y_speed/1.5
                     elif self.abin_sir.can_jump(-5):
-                        self.cube_sprite.change_y = -Y_MOVE_SPEED/1.5
+                        self.cube_sprite.change_y = -self.y_speed/1.5
         if key == arcade.key.R:
             self.setup()
         if key == arcade.key.ESCAPE:
