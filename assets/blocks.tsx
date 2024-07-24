@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.2" name="blocks" tilewidth="32" tileheight="32" tilecount="23" columns="0" tilerendersize="grid">
+<tileset version="1.10" tiledversion="1.10.2" name="blocks" tilewidth="32" tileheight="32" tilecount="35" columns="0" tilerendersize="grid">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="8">
   <image width="32" height="32" source="tiles/black_block (Tile).png"/>
@@ -69,5 +69,41 @@
  </tile>
  <tile id="33">
   <image width="32" height="32" source="tiles/blue_block_exp (Tile).png"/>
+ </tile>
+ <tile id="35">
+  <image width="32" height="32" source="tiles/wb_block (Tile).png"/>
+ </tile>
+ <tile id="36">
+  <image width="32" height="32" source="tiles/gg_grass_nofade (Tile).png"/>
+ </tile>
+ <tile id="37">
+  <image width="32" height="32" source="tiles/gg_dirt (Tile).png"/>
+ </tile>
+ <tile id="38">
+  <image width="32" height="32" source="tiles/gg_dirt_fade (Tile).png"/>
+ </tile>
+ <tile id="39">
+  <image width="32" height="32" source="tiles/gg_grass (Tile).png"/>
+ </tile>
+ <tile id="40">
+  <image width="32" height="32" source="tiles/gg_grass_nofade_ag (Tile).png"/>
+ </tile>
+ <tile id="41">
+  <image width="32" height="32" source="tiles/gg_dirt_fade_ag (Tile).png"/>
+ </tile>
+ <tile id="42">
+  <image width="32" height="32" source="tiles/gg_grass_ag (Tile).png"/>
+ </tile>
+ <tile id="43">
+  <image width="32" height="32" source="tiles/gg_spike_up (Tile).png"/>
+ </tile>
+ <tile id="44">
+  <image width="32" height="32" source="tiles/gg_spike_down (Tile).png"/>
+ </tile>
+ <tile id="46">
+  <image width="32" height="32" source="tiles/purple_block_down (Tile).png"/>
+ </tile>
+ <tile id="47">
+  <image width="32" height="32" source="tiles/red_block_new (Tile).png"/>
  </tile>
 </tileset>
