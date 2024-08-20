@@ -1,5 +1,6 @@
 # PyJump (class 12 project)
 # by Siddharth Jai Gokulan
+# uses arcade 3.0.0.dev29
 
 import arcade
 import arcade.gui
@@ -170,7 +171,7 @@ class Game(arcade.View):
     
     def setup(self):
         self.window.background_color = AREA_COLOURS[self.area]
-        self.cube_texture = arcade.load_texture("assets/sphere.png")
+        self.cube_texture = arcade.load_texture(r".\assets\sphere.png")
         self.cube_sprite = arcade.Sprite(self.cube_texture, 0.03*(self.window.height/480))
         self.cube_sprite.position = [50*(self.window.height/480), 70*(self.window.height/480)]
         tile_layer_options = {
@@ -200,12 +201,11 @@ class Game(arcade.View):
         if self.can_double_jump is True:
             self.abin_sir.enable_multi_jump(2)
         
-
     def on_draw(self):
         self.clear()
         self.camera.use()
         self.scene.draw()
-        arcade.draw_sprite(self.cube_sprite)
+        self.cube_sprite.draw()
         self.attempt_text.draw()
         self.tip_text.draw()
 
@@ -336,7 +336,6 @@ class Game(arcade.View):
     
     def on_resize(self, width: int, height: int):
         self.window.show_view(Menu())
-    
 
 if __name__ == "__main__":
     arcade.enable_timings()
