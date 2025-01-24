@@ -43,7 +43,7 @@ bullet time."""
 
 AREA_LEVEL_COUNT = {
     1: 4,
-    2: 2,
+    2: 1,
     3: 1,
     4: 1
 }
